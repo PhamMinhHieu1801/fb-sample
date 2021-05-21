@@ -12,15 +12,14 @@ import Input from './Input';
 import Filter from './Filter';
 
 /* カスタムフック */
-import useStorage from '../hooks/storage';
+import useFbStorage from '../hooks/fbStorage';
 
 /* ライブラリ */
 import {getKey} from "../lib/util";
 
 function Todo() {
-  const [items, putItems, clearItems] = useStorage();
+  const [items, addItem, updateItem, clearItems] = useFbStorage();
 
-  
   const [filter, setFilter] = useState('ALL');
   
   const itemsFilter = items.filter(item => {
@@ -32,14 +31,15 @@ function Todo() {
 
   
   const addTodo = (data) => {
-    putItems([...items, {key: getKey(), text: data, done: false}]);
+    addItem({'text': data, 'done': false});
   }
   
   const changeStatus = (data) => {
-     const newItems = items.map(item => {
-      return item.key === data.key ? {...item, done: !item.done} : item
-    })
-    putItems(newItems);
+    // const newItems = items.map(item => {
+    //   return item.key === data.key ? {...item, done: !item.done} : item
+    // })
+    // putItems(newItems);
+    updateItem(data);
   }
   
   const changeFilterHandler = (value) => {
